@@ -3,18 +3,19 @@
 ## 🧩 Entities
 - `User`
 - `Group`
-- `Module`
+- `ContentModule`
 - `Subject`
 - `Question`
 - `Doc`
 
 ## 🧩 Relações Entre Entidades
 
-- `User`    **---** `Group` → *Many-to-Many*
-- `Group`   **---** `Subject` → *Many-to-Many*
-- `Subject` **1---*** `Module` → *One-to-Many*
-- `Module`  **---** `Question` → *Many-to-Many*
-- `Module`  **---** `Doc` → *Many-to-Many*
+- >`User`    * **---** *     `Group` → *Many-to-Many*
+- >`Group`   * **---** * `Subject` → *Many-to-Many*
+- >`Subject` **1---** * `ContentModule` → *One-to-Many*
+- >`ContentModule`  * **---** * `Question` → *Many-to-Many*
+- >`Question` * **---** **1** `QuestionOptions` → *Many-to-One*
+- >`ContentModule` * **---** * `Doc` → *Many-to-Many*
 
 ---
 

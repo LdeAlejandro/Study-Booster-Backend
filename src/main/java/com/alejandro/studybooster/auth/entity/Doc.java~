@@ -1,0 +1,19 @@
+package com.alejandro.studybooster.auth.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table (name = "Docs")
+public class Doc {
+
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false, unique = false)
+    private String title;
+
+
+    @Column(nullable = false, unique = false)
+    private String content;
+}
