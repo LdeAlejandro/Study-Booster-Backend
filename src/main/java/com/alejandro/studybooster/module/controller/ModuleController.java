@@ -1,0 +1,6 @@
+package com.alejandro.studybooster.module.controller;
+
+public class ModuleController {
+
+
+}
