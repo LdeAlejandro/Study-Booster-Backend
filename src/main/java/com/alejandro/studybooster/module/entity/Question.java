@@ -1,6 +1,7 @@
-package com.alejandro.studybooster.auth.entity;
+package com.alejandro.studybooster.module.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +10,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "questions")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Question {
 
     @Id
@@ -23,10 +28,6 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionOption> options = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "correct_option_id", nullable = true)
-    private QuestionOption correctOption;
 
     @ManyToMany(mappedBy = "questions")
     private Set<ContentModule> modules = new HashSet<>();

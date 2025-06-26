@@ -1,12 +1,18 @@
-    package com.alejandro.studybooster.auth.entity;
+    package com.alejandro.studybooster.module.entity;
 
+    import com.alejandro.studybooster.auth.entity.User;
     import jakarta.persistence.*;
+    import lombok.*;
 
     import java.util.HashSet;
     import java.util.Set;
 
     @Entity
     @Table (name = "groups")
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
     public class Group {
 
         @Id

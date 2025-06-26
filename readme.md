@@ -6,6 +6,7 @@
 - `ContentModule`
 - `Subject`
 - `Question`
+-`QuestionOptions`
 - `Doc`
 
 ## 🧩 Relações Entre Entidades
@@ -14,7 +15,9 @@
 - >`Group`   * **---** * `Subject` → *Many-to-Many*
 - >`Subject` **1---** * `ContentModule` → *One-to-Many*
 - >`ContentModule`  * **---** * `Question` → *Many-to-Many*
-- >`Question` * **---** **1** `QuestionOptions` → *Many-to-One*
+- >`ContentModule`  * **---** 1 `ContentModule` → *Many-to-One*
+- >`ContentModule`  1 **---** * `ContentModule` → *One-to-Many*
+- >`Question` * **---** **1** `QuestionOptions` → *One-to-Many*
 - >`ContentModule` * **---** * `Doc` → *Many-to-Many*
 
 ---
@@ -35,45 +38,57 @@
 ### Subjects
 
 - >`POST /create-subject`
-- >`DELETE /delete-subject`
+- >`PUT /edit-subject/{id}`
+- >`DELETE /delete-subject/{id}`
 
+---
+
+## 🧱 Modules
+
+- >`GET /subject/{id}/module`
+- >`GET /subject/{id}/module/{id}`
+- >`GET /subject/{id}/modules?depth={depth}`
+- >`POST /subject/{id}/module`
+- >`POST /subject/{id}/module/{id}/add-question`
+- >`PUT /subject/{id}/module/{id}`
+- >`DELETE /subject/{id}/module/{id}`
+
+---
 ### Questions
+- >`POST /module/{id}/question/create-question`
+- >`GET /module/{id}/question`
+- >`PUT /module/{id}/question/edit-question/{id}`
+- >`DELETE /module/{id}/question/delete-question/{id}`
+  
+---
 
-- >`POST subject-ID/create-question` 
-- >`PUT /subject-ID/edit-question/ID`
-- >`DELETE /subject-ID/delete-question/ID`
+### Questions Options
+
+- >`GET /question/{id}/answer-options`
+- >`POST /question/{id}/create-option`
+- >`PUT /question/{id}/edit-options`
+- >`DELETE /question/{id}/option/{id}`
+
 
 ---
 
 ### Docs
-
-- >`POST subject-ID/create-doc` 
-- >`PUT /subject-ID/edit-doc/ID`
-- >`DELETE /subject-ID/delete-doc/ID`
-
+- >`POST /module/{id}/doc/create-doc`
+- >`PUT /module/{id}/doc/edit-doc/{id}`
+- >`DELETE /module/{id}/doc/delete-doc/{id}`
 ---
 
-## 🗂️ Grupos
+## 🗂️ Groups
 
-- >`POST /create-group`
-- >`POST /add-subject-to-group/{group-ID}`
-- >`GET /list-group`
-- >`POST /add-user-to-group/{group-ID}/{user-group}`
-
+- >`POST /group/create-group`
+- >`POST /group/add-subject-to-group/{id}`
+- >`GET /group/list-group`
+- >`POST /group/add-user-to-group/{id}/{user-group}`
+  
 ---
 
-## 🧱 Módulos
+## 🔗 Reference
 
-- >`GET /subject-ID/modules`
-- >`GET /subject-ID/module-ID`
-- >`POST /subject-ID/module/add-question`
-- >`POST /subject-ID/add-question-to-module`
-- >`POST /subject-ID/add-doc-to-module`
-
----
-
-## 🔗 Referências
-
-- >`GET /subject-ID/doc-ID/reference-ID`
+- >`GET /module/{id}/doc/{id}/reference/{id}`
 
 

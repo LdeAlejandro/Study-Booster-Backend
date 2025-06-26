@@ -1,9 +1,13 @@
-package com.alejandro.studybooster.auth.entity;
+package com.alejandro.studybooster.module.entity;
 
 import jakarta.persistence.*;
-
+import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 
 @Entity
 @Table (name = "Docs")
