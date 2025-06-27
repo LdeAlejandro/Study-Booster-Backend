@@ -1,6 +1,5 @@
 package com.alejandro.studybooster.module.service;
 
-import com.alejandro.studybooster.module.controller.dto.SubjectDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;

@@ -18,8 +18,8 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = false)
-    private String SubjectName;
+    @Column(nullable = false, unique = true)
+    private String subjectName;
 
     // orphanRemoval: removes module from DB when it's no longer linked to this subject
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
