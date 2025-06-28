@@ -50,35 +50,71 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public ResponseEntity<Map<String, Object>> createSubject(SubjectDTO subjectData){
 
-        Optional<Subject> existingSubject = subjectRepository.findBySubjectName(subjectData.subjectName());
+
+        // response object
+        Map<String, Object> response = new HashMap<>();
 
         // check if subject name is empty
         if (subjectData.subjectName() == null || subjectData.subjectName().equals("")) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Subject Name can´t be empty, please change the subject");
+            response.put("message", "Subject Name can´t be empty");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
+        //Check if the subject name already exists in DB
+        Optional<Subject> existingSubject = subjectRepository.findBySubjectName(subjectData.subjectName());
+
+
         // check if subject name already exists, (CHANGE THIS LATER WHEN IMPLEMENTING GROUPS)
         if (existingSubject.isPresent()) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Subject Name already exists, please change the subject name");
+            response.put("message", "Subject Name already exists");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
+
+
 
         //save new subject
         Subject newSubject = new Subject();
         newSubject.setSubjectName(subjectData.subjectName());
         subjectRepository.save(newSubject);
 
-        Map<String, Object> response = new HashMap<>();
         response.put("message", "Subject created successfully");
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
 
+    @Override
+    public ResponseEntity<Map<String,Object>> updateSubject(String subjectCurrentName, SubjectDTO subjectData){
 
+        // response object
+        Map<String, Object> response = new HashMap<>();
 
+        // check if the current Subject name is empty
+        if (subjectCurrentName == null || subjectCurrentName.isBlank()) {
+
+            response.put("message", "The Current Subject Name can´t be empty");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+            // check if the new Subject  name is empty
+            if (subjectData.subjectName() == null || subjectData.subjectName().isBlank()) {
+
+            response.put("message", "Subject Name can´t be empty");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        //Check if the subject name already exists in DB
+        Optional<Subject> existingSubject = subjectRepository.findBySubjectName(subjectCurrentName);
+
+        //save updated Subject
+        Subject updatedSubject = existingSubject.get();
+        updatedSubject.setSubjectName(subjectData.subjectName());
+        subjectRepository.save(updatedSubject);
+
+        response.put("message", "Subject Name updated successfully");
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
 
 
 }

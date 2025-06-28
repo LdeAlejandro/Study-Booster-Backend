@@ -7,10 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class SubjectController {
@@ -18,7 +16,14 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     public SubjectController (SubjectService subjectService) {
+
         this.subjectService = subjectService;
+    }
+
+    @GetMapping("/subjects")
+    public Page<Subject> getSubjects(Pageable pageable){
+
+        return subjectService.getSubjects(pageable);
     }
 
     @PostMapping("/create-subject")
@@ -28,11 +33,13 @@ public class SubjectController {
 
     }
 
-    @GetMapping("/subjects")
-    public Page<Subject> getSubjects(Pageable pageable){
-
-        return subjectService.getSubjects(pageable);
+    @PutMapping("/edit-subject/{subjectCurrentName}")
+    @Transactional
+    public ResponseEntity editSubject(@PathVariable String subjectCurrentName, @RequestBody SubjectDTO subjectData){
+        return subjectService.updateSubject(subjectCurrentName, subjectData);
     }
+
+
 
     @GetMapping("/ping")
     public String ping() {
