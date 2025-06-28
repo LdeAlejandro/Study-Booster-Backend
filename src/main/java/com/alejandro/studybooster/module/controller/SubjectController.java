@@ -39,6 +39,12 @@ public class SubjectController {
         return subjectService.updateSubject(subjectCurrentName, subjectData);
     }
 
+    @DeleteMapping("/delete-subject")
+    @Transactional
+    public ResponseEntity deleteSubject (@RequestBody SubjectDTO subjectData){
+        return subjectService.deleteSubject(subjectData);
+    }
+
 
 
     @GetMapping("/ping")

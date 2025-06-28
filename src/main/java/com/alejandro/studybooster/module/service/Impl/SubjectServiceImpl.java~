@@ -137,7 +137,8 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         // check if subject name already exists, (CHANGE THIS LATER WHEN IMPLEMENTING GROUPS)
-        else{
+        else if (existingSubject.isPresent()) {
+
             subjectRepository.delete(existingSubject.get());
             response.put("message", "Subject Name found and deleted successfully");
             return ResponseEntity.status(HttpStatus.OK).body(response);
