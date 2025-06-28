@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 public record SubjectDTO(
 
         @NotBlank
-        String SubjectName
+        String subjectName
 
 ) {
 }

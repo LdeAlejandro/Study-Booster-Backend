@@ -37,6 +37,7 @@
 
 ### Subjects
 
+- >`GET /subjects`
 - >`POST /create-subject`
 - >`PUT /edit-subject/{id}`
 - >`DELETE /delete-subject/{id}`
