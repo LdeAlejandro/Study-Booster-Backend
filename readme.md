@@ -39,8 +39,8 @@
 
 - >`GET /subjects`
 - >`POST /create-subject`
-- >`PUT /edit-subject/{name}`
-- >`DELETE /delete-subject/{id}`
+- >`PUT /edit-subject/{subjectCurrentName}`
+- >`DELETE /delete-subject/{subjectCurrentName`
 
 ---
 
@@ -56,8 +56,9 @@
 
 ---
 ### Questions
+- >`GET /module/{id}/question/module-questions`
+- >`GET /module/{id}/question/{id}`
 - >`POST /module/{id}/question/create-question`
-- >`GET /module/{id}/question`
 - >`PUT /module/{id}/question/edit-question/{id}`
 - >`DELETE /module/{id}/question/delete-question/{id}`
   
@@ -65,10 +66,10 @@
 
 ### Questions Options
 
-- >`GET /question/{id}/answer-options`
-- >`POST /question/{id}/create-option`
-- >`PUT /question/{id}/edit-options`
-- >`DELETE /question/{id}/option/{id}`
+- >`GET /question/{id}/option/answer-options`
+- >`POST /question/{id}/option/create-option`
+- >`PUT /question/{id}/option/edit-options`
+- >`DELETE /question/{id}/option/delete-option/{id}`
 
 
 ---

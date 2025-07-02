@@ -20,7 +20,7 @@ public class Doc {
     @Column(nullable = false, unique = false)
     private String title;
 
-
+    @Lob
     @Column(nullable = false, unique = false)
     private String content;
 
