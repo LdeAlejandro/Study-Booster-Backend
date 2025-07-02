@@ -26,20 +26,20 @@ public class SubjectController {
         return subjectService.getSubjects(pageable);
     }
 
-    @PostMapping("/create-subject")
+    @PostMapping("/subjects")
     public ResponseEntity createSubject(@RequestBody SubjectDTO subjectData) {
 
         return subjectService.createSubject(subjectData);
 
     }
 
-    @PutMapping("/edit-subject/{subjectCurrentName}")
+    @PutMapping("/subjects/{subjectCurrentName}")
     @Transactional
     public ResponseEntity editSubject(@PathVariable String subjectCurrentName, @RequestBody SubjectDTO subjectData){
         return subjectService.updateSubject(subjectCurrentName, subjectData);
     }
 
-    @DeleteMapping("/delete-subject")
+    @DeleteMapping("/subjects/{subjectName}")
     @Transactional
     public ResponseEntity deleteSubject (@RequestBody SubjectDTO subjectData){
         return subjectService.deleteSubject(subjectData);

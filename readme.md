@@ -37,39 +37,38 @@
 
 ### Subjects
 
-- >`GET /subjects`
-- >`POST /create-subject`
-- >`PUT /edit-subject/{subjectCurrentName}`
-- >`DELETE /delete-subject/{subjectCurrentName`
+- >`GET /subjects?page=0&size=10`
+- >`POST /subjects`
+- >`PUT /subjects/{subjectCurrentName}`
+- >`DELETE /subjects/{subjectName}`
 
 ---
 
 ## 🧱 Modules
 
-- >`GET /subject/{id}/module`
-- >`GET /subject/{id}/module/{moduleId}`
-- >`GET /subject/{id}/modules?depth={depth}`
-- >`POST /subject/{id}/module`
-- >`POST /subject/{id}/module/{moduleId}/add-question`
-- >`PUT /subject/{id}/module/{moduleId}`
-- >`DELETE /subject/{id}/module/{moduleId}`
+- >`GET /subject/{subjectId}/module/get-page-modules?page=0&size=10`
+- >`GET /subject/{subjectId}/module/{moduleId}`
+- >`GET /subject/{subjectId}/module/depth?depth=2`
+- >`POST /subject/{subjectId}/module`
+- >`PUT /subject/{subjectId}/module/{moduleId}`
+- >`DELETE /subject/{subjectId}/module/{moduleId}`
 
 ---
 ### Questions
-- >`GET /module/{moduleId}/question/module-questions`
+- >`GET /module/{moduleId}/question`
 - >`GET /module/{moduleId}/question/{questionId}`
-- >`POST /module/{moduleId}/question/create-question`
-- >`PUT /module/{moduleId}/question/edit-question/{questionId}`
-- >`DELETE /module/{moduleId}/question/delete-question/{questionId}`
+- >`POST /module/{moduleId}/question`
+- >`PUT /module/{moduleId}/question/{id}`
+- >`DELETE /module/{moduleId}/question/{id}`
   
 ---
 
 ### Questions Options
 
-- >`GET /question/{id}/option/answer-options`
-- >`POST /question/{id}/option/create-option`
-- >`PUT /question/{id}/option/edit-options`
-- >`DELETE /question/{id}/option/delete-option/{optionId}`
+- >`GET /question/{questionId}/option`
+- >`POST /question/{questionId}/option`
+- >`PUT /question/{questionId}/option/{optionId}`
+- >`DELETE /question/{questionId}/option/{optionId}`
 
 
 ---

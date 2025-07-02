@@ -21,7 +21,7 @@ public class QuestionController {
     }
 
     // get all module questions
-    @GetMapping("/module-questions")
+    @GetMapping
     public Page <CreateQuestionDTO> getModuleQuestions(
             @PathVariable ("moduleId") Long moduleId,
             Pageable pageable){
@@ -41,7 +41,7 @@ public class QuestionController {
     }
 
     // create question
-    @PostMapping("/create-question")
+    @PostMapping
     public ResponseEntity createQuestion(
             @PathVariable ("moduleId") Long moduleId,
             @Valid @RequestBody CreateQuestionDTO createQuestionDTO){
@@ -51,7 +51,7 @@ public class QuestionController {
     }
 
     // edit question
-    @PutMapping("/edit-question/")
+    @PutMapping("/{questionId}")
     @Transactional
     public ResponseEntity editQuestion(
             @PathVariable ("moduleId") Long moduleId,
@@ -62,7 +62,7 @@ public class QuestionController {
     }
 
     // delete question
-    @DeleteMapping("/delete-question/{questionId}")
+    @DeleteMapping("/{questionId}")
     @Transactional
     public ResponseEntity deleteQuestion(
             @PathVariable ("moduleId") Long moduleId,

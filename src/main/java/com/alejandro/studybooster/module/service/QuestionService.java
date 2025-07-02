@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface QuestionService {
 
-    Page<CreateQuestionDTO> getAllModuleQuestionsById(Long moduleId, Pageable pageable);
+    public Page<CreateQuestionDTO> getAllModuleQuestionsById(Long moduleId, Pageable pageable);
     public ResponseEntity <Map<String, Object>> getModuleQuestionById(Long moduleId, Long questionId);
     public ResponseEntity <Map<String, Object>> createQuestion(Long moduleId, CreateQuestionDTO createQuestionDTO);
     public ResponseEntity <Map<String, Object>> editQuestion(Long moduleId, UpdateQuestionDTO updateQuestionDTO);

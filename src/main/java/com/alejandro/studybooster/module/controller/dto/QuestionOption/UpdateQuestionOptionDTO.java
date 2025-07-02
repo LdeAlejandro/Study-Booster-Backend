@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record UpdateQuestionOptionDTO(
 
-        @NotNull
-        Long id,
-
         @NotBlank
         String option,
 

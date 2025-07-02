@@ -21,7 +21,7 @@ public class QuestionOptionsController {
     }
 
     //Get question answer options
-    @GetMapping("/answer-options")
+    @GetMapping
     public List<CreateQuestionOptionDTO> getAnswerOptions(
             @PathVariable ("questionId") Long questionId){
 
@@ -30,7 +30,7 @@ public class QuestionOptionsController {
     }
 
     // Create question option
-    @PostMapping("/create-option")
+    @PostMapping
     public ResponseEntity createOption(
             @PathVariable ("questionId") Long questionId,
             @Valid @RequestBody CreateQuestionOptionDTO createQuestionOptionDTO){
@@ -40,18 +40,19 @@ public class QuestionOptionsController {
     }
 
     // Edit question option
-    @PutMapping("/edit-options")
+    @PutMapping("/{optionId}")
     @Transactional
     public ResponseEntity editOption
             (@PathVariable ("questionId") Long questionId,
+             @PathVariable ("optionId") Long optionId,
              @Valid @RequestBody UpdateQuestionOptionDTO updateQuestionOptionDTO){
 
-        return questionOptionsService.editOption(questionId, updateQuestionOptionDTO);
+        return questionOptionsService.editOption(questionId, optionId, updateQuestionOptionDTO);
 
     }
 
     // Delete question option
-    @DeleteMapping("/delete-option/{optionId}")
+    @DeleteMapping("/{optionId}")
     @Transactional
     public ResponseEntity deleteOption(
             @PathVariable ("questionId") Long questionId,
