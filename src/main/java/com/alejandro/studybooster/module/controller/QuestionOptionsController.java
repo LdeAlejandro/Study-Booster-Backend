@@ -1,12 +1,17 @@
 package com.alejandro.studybooster.module.controller;
 
+import com.alejandro.studybooster.module.controller.dto.QuestionOption.CreateQuestionOptionDTO;
+import com.alejandro.studybooster.module.controller.dto.QuestionOption.UpdateQuestionOptionDTO;
 import com.alejandro.studybooster.module.service.QuestionOptionsService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/question/{id}/option")
+@RequestMapping("/question/{questionId}/option")
 public class QuestionOptionsController {
 
     private final QuestionOptionsService questionOptionsService;
@@ -15,26 +20,45 @@ public class QuestionOptionsController {
         this.questionOptionsService = questionOptionsService;
     }
 
+    //Get question answer options
     @GetMapping("/answer-options")
-    public ResponseEntity getAnswerOptions(){
-        return questionOptionsService.getAnswerOptions();
+    public List<CreateQuestionOptionDTO> getAnswerOptions(
+            @PathVariable ("questionId") Long questionId){
+
+        return questionOptionsService.getAnswerOptionsByQuestionId(questionId);
+
     }
 
+    // Create question option
     @PostMapping("/create-option")
-    public ResponseEntity createOption(){
-        return questionOptionsService.createOption();
+    public ResponseEntity createOption(
+            @PathVariable ("questionId") Long questionId,
+            @Valid @RequestBody CreateQuestionOptionDTO createQuestionOptionDTO){
+
+        return questionOptionsService.createOption(questionId, createQuestionOptionDTO);
+
     }
 
+    // Edit question option
     @PutMapping("/edit-options")
     @Transactional
-    public ResponseEntity editOption(){
-        return questionOptionsService.editOption();
+    public ResponseEntity editOption
+            (@PathVariable ("questionId") Long questionId,
+             @Valid @RequestBody UpdateQuestionOptionDTO updateQuestionOptionDTO){
+
+        return questionOptionsService.editOption(questionId, updateQuestionOptionDTO);
+
     }
 
-    @DeleteMapping("/delete-option/{id}")
+    // Delete question option
+    @DeleteMapping("/delete-option/{optionId}")
     @Transactional
-    public ResponseEntity deleteOption(){
-        return questionOptionsService.deleteOption();
+    public ResponseEntity deleteOption(
+            @PathVariable ("questionId") Long questionId,
+            @PathVariable ("optionId") Long optionId){
+
+        return questionOptionsService.deleteOption(questionId, optionId);
+
     }
 
 

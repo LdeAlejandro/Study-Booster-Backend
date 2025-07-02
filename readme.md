@@ -47,20 +47,20 @@
 ## 🧱 Modules
 
 - >`GET /subject/{id}/module`
-- >`GET /subject/{id}/module/{id}`
+- >`GET /subject/{id}/module/{moduleId}`
 - >`GET /subject/{id}/modules?depth={depth}`
 - >`POST /subject/{id}/module`
-- >`POST /subject/{id}/module/{id}/add-question`
-- >`PUT /subject/{id}/module/{id}`
-- >`DELETE /subject/{id}/module/{id}`
+- >`POST /subject/{id}/module/{moduleId}/add-question`
+- >`PUT /subject/{id}/module/{moduleId}`
+- >`DELETE /subject/{id}/module/{moduleId}`
 
 ---
 ### Questions
-- >`GET /module/{id}/question/module-questions`
-- >`GET /module/{id}/question/{id}`
-- >`POST /module/{id}/question/create-question`
-- >`PUT /module/{id}/question/edit-question/{id}`
-- >`DELETE /module/{id}/question/delete-question/{id}`
+- >`GET /module/{moduleId}/question/module-questions`
+- >`GET /module/{moduleId}/question/{questionId}`
+- >`POST /module/{moduleId}/question/create-question`
+- >`PUT /module/{moduleId}/question/edit-question/{questionId}`
+- >`DELETE /module/{moduleId}/question/delete-question/{questionId}`
   
 ---
 
@@ -69,7 +69,7 @@
 - >`GET /question/{id}/option/answer-options`
 - >`POST /question/{id}/option/create-option`
 - >`PUT /question/{id}/option/edit-options`
-- >`DELETE /question/{id}/option/delete-option/{id}`
+- >`DELETE /question/{id}/option/delete-option/{optionId}`
 
 
 ---

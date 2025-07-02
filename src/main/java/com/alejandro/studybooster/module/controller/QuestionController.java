@@ -1,12 +1,17 @@
 package com.alejandro.studybooster.module.controller;
 
+import com.alejandro.studybooster.module.controller.dto.Question.CreateQuestionDTO;
+import com.alejandro.studybooster.module.controller.dto.Question.UpdateQuestionDTO;
 import com.alejandro.studybooster.module.service.QuestionService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/module/{id}/question/")
+@RequestMapping("/module/{moduleId}/question/")
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -17,31 +22,53 @@ public class QuestionController {
 
     // get all module questions
     @GetMapping("/module-questions")
-    public ResponseEntity getModuleQuestions(){
-        return questionService.getModuleQuestions();
+    public Page <CreateQuestionDTO> getModuleQuestions(
+            @PathVariable ("moduleId") Long moduleId,
+            Pageable pageable){
+
+        return questionService.getAllModuleQuestionsById(moduleId, pageable);
+
     }
 
     // get specific question by id
-    @GetMapping("/{id}")
-    public ResponseEntity getModuleQuestions(){
-        return questionService.getModuleQuestionById();
+    @GetMapping("/{questionId}")
+    public ResponseEntity getModuleQuestionById(
+            @PathVariable ("moduleId") Long moduleId,
+            @PathVariable ("questionId") Long questionId){
+
+        return questionService.getModuleQuestionById(moduleId, questionId);
+
     }
 
+    // create question
     @PostMapping("/create-question")
-    public ResponseEntity createQuestion(){
-        return questionService.createQuestion();
+    public ResponseEntity createQuestion(
+            @PathVariable ("moduleId") Long moduleId,
+            @Valid @RequestBody CreateQuestionDTO createQuestionDTO){
+
+        return questionService.createQuestion(moduleId, createQuestionDTO);
+
     }
 
-    @PutMapping("/edit-question/{id}")
+    // edit question
+    @PutMapping("/edit-question/")
     @Transactional
-    public ResponseEntity createQuestion(){
-        return questionService.editQuestion();
+    public ResponseEntity editQuestion(
+            @PathVariable ("moduleId") Long moduleId,
+            @Valid @RequestBody UpdateQuestionDTO updateQuestionDTO){
+
+        return questionService.editQuestion(moduleId, updateQuestionDTO);
+
     }
 
-    @DeleteMapping("/delete-question/id")
+    // delete question
+    @DeleteMapping("/delete-question/{questionId}")
     @Transactional
-    public ResponseEntity deleteQuestion(){
-        return questionService.deleteQuestion();
+    public ResponseEntity deleteQuestion(
+            @PathVariable ("moduleId") Long moduleId,
+            @PathVariable ("questionId") Long questionId){
+
+        return questionService.deleteQuestion(moduleId, questionId);
     }
 
 
