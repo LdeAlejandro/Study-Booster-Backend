@@ -1,0 +1,1 @@
+ALTER TABLE docs ALTER COLUMN content TYPE TEXT;

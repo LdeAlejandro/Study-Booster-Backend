@@ -74,9 +74,11 @@
 ---
 
 ### Docs
-- >`POST /module/{id}/doc/create-doc`
-- >`PUT /module/{id}/doc/edit-doc/{id}`
-- >`DELETE /module/{id}/doc/delete-doc/{id}`
+- >`GET /module/{moduleId}/docs`
+- >`GET /module/{moduleId}/docs/{docId}`
+- >`POST /module/{moduleId}/docs`
+- >`PUT /module/{moduleId}/docs/{docId}`
+- >`DELETE /module/{moduleId}/docs/{docId}`
 ---
 
 ## 🗂️ Groups

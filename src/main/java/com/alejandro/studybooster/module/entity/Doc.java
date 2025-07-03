@@ -21,7 +21,7 @@ public class Doc {
     private String title;
 
     @Lob
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false)
     private String content;
 
     @ManyToMany (mappedBy = "docs")
