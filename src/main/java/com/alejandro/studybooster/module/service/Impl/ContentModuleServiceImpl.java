@@ -10,19 +10,13 @@ import com.alejandro.studybooster.module.entity.Subject;
 import com.alejandro.studybooster.module.repository.ContentModuleRepository;
 import com.alejandro.studybooster.module.repository.SubjectRepository;
 import com.alejandro.studybooster.module.service.ContentModuleService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,12 +96,67 @@ public class ContentModuleServiceImpl implements ContentModuleService {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    // get modules with depth pageable
     @Override
-    public List<GetContentModuleDTO> getModulesWithDepth(Long subjectId, int depth) {
-        return List.of();
+    public Page<GetContentModuleDTO> getModulesWithDepth(
+            Long subjectId, int depth,
+            Pageable pageable) {
+
+        // create a list to store current depth modules
+        List<GetContentModuleDTO> modulesAtCurrentDepth = new ArrayList<>();
+
+        // get root modules and add then to the list
+        List<ContentModule> rootModules = contentModuleRepository.findBySubjectIdAndParentIsNull(subjectId);
+
+        // recursive call to get modules with current depth
+        for(ContentModule module : rootModules){
+            filterByDepthRecursive(module, modulesAtCurrentDepth, depth, 0);
+        }
+
+        //pagination
+        Pageable safePageable = PageRequest.of(
+                pageable.getPageNumber(), // check number of current page in the request
+                Math.min(pageable.getPageSize(), 16), // limit max page elements to 16
+                Sort.by(Sort.Direction.DESC, "id") // sort by id decrecent
+
+        );
+
+        // calculate start and end for pagination and create paged list
+        int start = (int) safePageable.getOffset(); // check how many elements have to skip to get the current page (number of elements to skip)
+        int end = Math.min(start + safePageable.getPageSize(), modulesAtCurrentDepth.size()); // check until which element to stop
+        List<GetContentModuleDTO> paged = modulesAtCurrentDepth.subList(start, end); // create a list of element of the current page
+
+        return new PageImpl<>(paged, safePageable, modulesAtCurrentDepth.size());
+
     }
 
-    //Create module
+    //collectModulesWiththeCurrentDepth auxiliar function
+    private void filterByDepthRecursive(ContentModule module, List<GetContentModuleDTO> result, int targetDepth, int currentDepth){
+
+        //check id the current depth is equal to the target depth
+        if (currentDepth == targetDepth) {
+            // add module to list with depth
+            result.add(new GetContentModuleDTO(
+                    module.getId(),
+                    module.getName(),
+                    module.getSubject().getId(),
+                    module.getParent() != null ? module.getParent().getId() : null, // check if parent is null and return null if it is
+                    module.getChildren().stream().map(ContentModule::getId).collect(Collectors.toSet()), // get module children ids
+                    module.getQuestions().stream().map(Question::getId).collect(Collectors.toSet()), // get module question ids
+                    module.getDocs().stream().map(Doc::getId).collect(Collectors.toSet())
+            ));
+            // stop recursion when reaching expected target depth
+            return;
+
+        }
+
+        // recursive call if current depth is not equal to target depth repeat until target depth is reached
+        for (ContentModule child : module.getChildren()){
+            filterByDepthRecursive(child, result, targetDepth, currentDepth + 1);
+        }
+    }
+
+    //Create module@Override
     public ResponseEntity<Map<String, Object>> createModule(Long subjectId, CreateContentModuleDTO dto){
 
         // response object

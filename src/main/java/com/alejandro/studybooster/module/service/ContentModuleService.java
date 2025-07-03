@@ -14,7 +14,7 @@ public interface ContentModuleService {
 
     public Page<GetContentModuleDTO> getPageModules(Long subjectId, Pageable pageable);
     public ResponseEntity<Map<String, Object>> getModuleById(Long moduleId);
-    public List<GetContentModuleDTO> getModulesWithDepth(Long subjectId, int depth);
+    public Page<GetContentModuleDTO> getModulesWithDepth(Long subjectId, int depth, Pageable pageable);
     public ResponseEntity<Map<String, Object>> createModule(Long subjectId, CreateContentModuleDTO dto);
     public ResponseEntity<Map<String, Object>> updateModule (Long moduleId, UpdateContentModuleDTO dto);
     public ResponseEntity<Map<String, Object>> deleteModule(Long moduleId);

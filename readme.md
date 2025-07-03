@@ -62,16 +62,33 @@
 
 ## 🧱 Modules
 
-- >`GET /subject/{subjectId}/module/get-page-modules?page=0&size=10`
-- >`GET /subject/{subjectId}/module/{moduleId}`
-- >`GET /subject/{subjectId}/module/depth?depth=2`
+- **Get All Modules Pageable**   
+`GET /subject/{subjectId}/module/get-page-modules?page=0&size=10`
+
+
+- **Get Modules By Depth**   
+    `GET /subject/3/module/depth?depth=1&page=0&size=10`
+
+
+- **Get Module By Id**  
+`GET /subject/{subjectId}/module/{moduleId}`
+
 
 - **Create Module**                      
   `POST /subject/{subjectId}/module`
     ```json
   {
-     "subjectName": "YOUR MODULE NAME"
+     "name": "YOUR MODULE NAME"
   }
+
+- **Create SubModule**                      
+  `POST /subject/{subjectId}/module`
+    ```json
+  {
+     "name": "YOUR MODULE NAME"
+     "parentId": 1
+  }
+  
 - >`PUT /subject/{subjectId}/module/{moduleId}`
 - >`DELETE /subject/{subjectId}/module/{moduleId}`
 

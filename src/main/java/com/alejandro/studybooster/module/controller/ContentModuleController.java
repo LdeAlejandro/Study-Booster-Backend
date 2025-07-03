@@ -7,6 +7,7 @@ import com.alejandro.studybooster.module.service.ContentModuleService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,8 @@ public class ContentModuleController {
 
     //Get all modules pageable
     @GetMapping("/get-page-modules")
-    public Page<GetContentModuleDTO> getPageModules(@PathVariable("subjectId") Long subjectId, Pageable pageable) {
+    public Page<GetContentModuleDTO> getPageModules(@PathVariable("subjectId") Long subjectId,
+                                                    @PageableDefault(size = 12, page = 0) Pageable pageable ) {
         return contentModuleService.getPageModules(subjectId, pageable);
     }
 
@@ -34,14 +36,15 @@ public class ContentModuleController {
     public ResponseEntity<Map<String, Object>> getModuleById(@PathVariable("moduleId") Long moduleId) {
         return contentModuleService.getModuleById(moduleId);
     }
-//
-//    //Get modules by depth
-//    @GetMapping("/depth")
-//    public List<GetContentModuleDTO> getModulesWithDepth(
-//            @PathVariable("subjectId") Long subjectId,
-//            @RequestParam(required = false, defaultValue = "1") int depth) {
-//        return contentModuleService.getModulesWithDepth(subjectId, depth);
-//    }
+
+    //Get modules by depth
+    @GetMapping("/depth")
+    public Page<GetContentModuleDTO> getModulesWithDepth(
+            @PathVariable("subjectId") Long subjectId,
+            @RequestParam(required = false, defaultValue = "1") int depth,
+            @PageableDefault(size = 12, page = 0) Pageable pageable) {
+        return contentModuleService.getModulesWithDepth(subjectId, depth, pageable);
+    }
 
     //Create module
     @PostMapping
