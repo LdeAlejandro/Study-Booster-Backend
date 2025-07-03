@@ -1,15 +1,16 @@
 package com.alejandro.studybooster.module.controller.dto.ContentModule;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.lang.Nullable;
 
 import java.util.Set;
 
 public record CreateContentModuleDTO(
 
-        @NotNull
-        Long subjectId,
+        @NotBlank
+        String name,
 
-        @NotNull
         Long parentId
 
 ) {

@@ -41,8 +41,8 @@ public class SubjectController {
 
     @DeleteMapping("/subjects/{subjectName}")
     @Transactional
-    public ResponseEntity deleteSubject (@RequestBody SubjectDTO subjectData){
-        return subjectService.deleteSubject(subjectData);
+    public ResponseEntity deleteSubject (@PathVariable String subjectName){
+        return subjectService.deleteSubject(subjectName);
     }
 
 

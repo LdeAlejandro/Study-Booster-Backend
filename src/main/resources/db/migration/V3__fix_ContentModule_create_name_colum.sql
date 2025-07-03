@@ -1,0 +1,1 @@
+ALTER TABLE content_modules ADD COLUMN name VARCHAR(255) NOT NULL;

@@ -1,5 +1,6 @@
 package com.alejandro.studybooster.module.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Subject {
 
     // orphanRemoval: removes module from DB when it's no longer linked to this subject
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "subject-module") // To avoid infinite recursion when serializing
     private Set<ContentModule> modules = new HashSet<>();
 
 }

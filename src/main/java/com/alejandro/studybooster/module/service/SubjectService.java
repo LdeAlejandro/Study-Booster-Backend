@@ -14,5 +14,5 @@ public interface SubjectService {
     public Page<Subject> getSubjects(@PageableDefault(size = 10, page = 0) Pageable pageable);
     public ResponseEntity<Map<String, Object>> createSubject(SubjectDTO subjectData);
     public ResponseEntity<Map<String, Object>> updateSubject(String subjectCurrentName, SubjectDTO subjectData);
-    public ResponseEntity<Map<String, Object>>  deleteSubject(SubjectDTO subjectData);
+    public ResponseEntity<Map<String, Object>>  deleteSubject(String subjectName);
 }

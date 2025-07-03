@@ -9,7 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "content_modules")
+// unique constraints para que cada modulo dentro de um subject seja unico pelo string name
+@Table(name = "content_modules",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"subject_id", "name"})
+        })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,19 +24,23 @@ public class ContentModule {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
     @ManyToOne
     @JoinColumn (name = "subject_id", nullable = false)
+    @JsonBackReference(value = "subject-module")
     private Subject subject;
 
     //To allow the module to be a submodule (child module)
     @ManyToOne
     @JoinColumn(name = "parent_id")
-    @JsonBackReference // To avoid infinite recursion when serializing (this object will be ignored in the json)
+    @JsonBackReference(value = "parent-child")  // To avoid infinite recursion when serializing (this object will be ignored in the json)
     private ContentModule parent;
 
     //To allow the module to have submodules (Parent module)
     @OneToMany(mappedBy = "parent")
-    @JsonManagedReference // To avoid infinite recursion when serializing (this object will be included in the json)
+    @JsonManagedReference(value = "parent-child")// To avoid infinite recursion when serializing (this object will be included in the json)
     private Set<ContentModule> children = new HashSet<>();
 
     @ManyToMany

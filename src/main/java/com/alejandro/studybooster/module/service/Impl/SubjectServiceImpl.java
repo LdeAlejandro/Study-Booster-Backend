@@ -117,18 +117,18 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> deleteSubject(SubjectDTO subjectData){
+    public ResponseEntity<Map<String, Object>> deleteSubject(String subjectName){
 
         Map<String, Object> response = new HashMap<>();
 
         // check if subject name is empty
-        if (subjectData.subjectName() == null || subjectData.subjectName().equals("")) {
+        if (subjectName == null || subjectName.equals("")) {
             response.put("message", "Subject Name can´t be empty");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
         //Check if the subject name already exists in DB
-        Optional<Subject> existingSubject = subjectRepository.findBySubjectName(subjectData.subjectName());
+        Optional<Subject> existingSubject = subjectRepository.findBySubjectName(subjectName);
 
         // check if subject does not exist in DB
         if (existingSubject.isEmpty()) {

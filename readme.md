@@ -33,14 +33,30 @@
 
 ---
 
-## 📚 Subjects, Questions e Docs
+## 📚 Subjects, ContentModule, Questions e Docs endpoints
 
 ### Subjects
 
-- >`GET /subjects?page=0&size=10`
-- >`POST /subjects`
-- >`PUT /subjects/{subjectCurrentName}`
-- >`DELETE /subjects/{subjectName}`
+- **List Subjects page**  
+  `GET /subjects?page=0&size=10`
+
+
+- **Create Subject**  
+  `POST /subjects`
+  ```json
+  {
+    "subjectName": "TEST2"
+  }
+
+- **Update Subject**                      
+   `PUT /subjects/{subjectCurrentName}` 
+    ```json
+  {
+     "subjectName": "TEST UPDATED"
+  }
+
+- **Delete Subject**      
+    `DELETE /subjects/{subjectName}`
 
 ---
 
@@ -49,7 +65,13 @@
 - >`GET /subject/{subjectId}/module/get-page-modules?page=0&size=10`
 - >`GET /subject/{subjectId}/module/{moduleId}`
 - >`GET /subject/{subjectId}/module/depth?depth=2`
-- >`POST /subject/{subjectId}/module`
+
+- **Create Module**                      
+  `POST /subject/{subjectId}/module`
+    ```json
+  {
+     "subjectName": "YOUR MODULE NAME"
+  }
 - >`PUT /subject/{subjectId}/module/{moduleId}`
 - >`DELETE /subject/{subjectId}/module/{moduleId}`
 
