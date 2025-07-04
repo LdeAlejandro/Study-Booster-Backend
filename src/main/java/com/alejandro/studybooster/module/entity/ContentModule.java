@@ -39,7 +39,7 @@ public class ContentModule {
     private ContentModule parent;
 
     //To allow the module to have submodules (Parent module)
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "parent-child")// To avoid infinite recursion when serializing (this object will be included in the json)
     private Set<ContentModule> children = new HashSet<>();
 

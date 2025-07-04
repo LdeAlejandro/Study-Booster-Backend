@@ -197,12 +197,47 @@ public class ContentModuleServiceImpl implements ContentModuleService {
 
     @Override
     public ResponseEntity<Map<String, Object>> updateModule(Long moduleId, UpdateContentModuleDTO dto) {
-        return null;
+
+        Optional <ContentModule> targetModule = contentModuleRepository.findById(moduleId);
+
+        Map<String, Object> response = new HashMap<>();
+
+        // If the module does not exist in DB
+        if (targetModule.isEmpty()) {
+            response.put("message", "module not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        // update module
+        ContentModule updatedModule = targetModule.get();
+        updatedModule.setName(dto.name());
+
+        contentModuleRepository.save(updatedModule);
+
+        response.put("message", "module updated successfully");
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> deleteModule(Long moduleId) {
-        return null;
+
+        Optional <ContentModule> targetModule = contentModuleRepository.findById(moduleId);
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (targetModule.isEmpty()) {
+            response.put("message", "module not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        contentModuleRepository.delete(targetModule.get());
+
+        response.put("message", "module deleted successfully");
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
+
 }
 

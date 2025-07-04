@@ -55,23 +55,23 @@ public class ContentModuleController {
         return contentModuleService.createModule(subjectId, createContentModuleDTO);
 
     }
-//
-//    //Update module
-//    @PutMapping("/{moduleId}")
-//    public ResponseEntity<Map<String, Object>> updateModule(
-//            @PathVariable("moduleId") Long moduleId,
-//            @Valid @RequestBody UpdateContentModuleDTO updateContentModuleDTO
-//            ){
-//        return contentModuleService.updateModule(moduleId, updateContentModuleDTO);
-//
-//    }
-//
-//    //Delete module
-//    @DeleteMapping("/{moduleId}")
-//    public ResponseEntity<Map<String, Object>> deleteModule(@PathVariable("moduleId") Long moduleId) {
-//
-//        return contentModuleService.deleteModule(moduleId);
-//
-//    }
+
+    //Update module
+    @PatchMapping("/{moduleId}")
+    public ResponseEntity<Map<String, Object>> updateModule(
+            @PathVariable("moduleId") Long moduleId,
+            @Valid @RequestBody UpdateContentModuleDTO updateContentModuleDTO
+            ){
+        return contentModuleService.updateModule(moduleId, updateContentModuleDTO);
+
+    }
+
+    //Delete module
+    @DeleteMapping("/{moduleId}")
+    public ResponseEntity<Map<String, Object>> deleteModule(@PathVariable("moduleId") Long moduleId) {
+
+        return contentModuleService.deleteModule(moduleId);
+
+    }
 
 }
