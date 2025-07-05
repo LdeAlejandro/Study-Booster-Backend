@@ -47,6 +47,7 @@
   {
     "subjectName": "TEST2"
   }
+  ```
 
 - **Update Subject**                      
    `PUT /subjects/{subjectCurrentName}` 
@@ -54,6 +55,7 @@
   {
      "subjectName": "TEST UPDATED"
   }
+  ```
 
 - **Delete Subject**      
     `DELETE /subjects/{subjectName}`
@@ -80,6 +82,7 @@
   {
      "name": "YOUR MODULE NAME"
   }
+  ```
 
 - **Create SubModule**                      
   `POST /subject/{subjectId}/module`
@@ -88,17 +91,58 @@
      "name": "YOUR MODULE NAME"
      "parentId": 1
   }
-  
-- >`PUT /subject/{subjectId}/module/{moduleId}`
+  ```
+
+- **Update Module Name By ID**                      
+`PATCH /subject/{subjectId}/module/{moduleId}`                 
+    ```json
+    {  
+      "name": "YOUR NEW MODULE NAME"
+    }
+    ```
+
+- **Delete Module By ID**
 - >`DELETE /subject/{subjectId}/module/{moduleId}`
 
 ---
 ### Questions
 - >`GET /module/{moduleId}/question`
 - >`GET /module/{moduleId}/question/{questionId}`
-- >`POST /module/{moduleId}/question`
-- >`PUT /module/{moduleId}/question/{id}`
-- >`DELETE /module/{moduleId}/question/{id}`
+- **Get Questions Pageable**                       
+  `POST /subject/3/module/3/question?page=1&size=60`
+
+
+- **Post Question**                       
+  `POST /subject/{subjectId}/module/{moduleId}/question`
+    ```json
+    {
+        "question": "What is the capital of France2?",
+        "answerExplanation": "Paris is the capital city of France.",
+        "options": [
+            { "option": "Paris", "correct": true },
+            { "option": "London", "correct": false },
+            { "option": "Berlin", "correct": false },
+            { "option": "Madrid", "correct": false }
+        ]
+    }
+    ```
+
+- **Put Question**                        
+  `PUT /question/{questionId}`
+    ```json
+    {
+        "question": "What is the capital of France2?",
+        "answerExplanation": "Paris is the capital city of France.",
+        "options": [
+            { "option": "Paris", "correct": true },
+            { "option": "London", "correct": false },
+            { "option": "Berlin", "correct": false },
+            { "option": "Madrid", "correct": false }
+        ]
+    }
+    ```
+- **Put Question**  
+`DELETE /question/{id}`
   
 ---
 

@@ -10,9 +10,10 @@ import java.util.Map;
 
 public interface QuestionService {
 
-    public Page<GetQuestionDTO> getAllModuleQuestionsById(Long moduleId, Pageable pageable);
-    public ResponseEntity <Map<String, Object>> getModuleQuestionById(Long moduleId, Long questionId);
-    public ResponseEntity <Map<String, Object>> createQuestion(Long moduleId, CreateQuestionDTO createQuestionDTO);
-    public ResponseEntity <Map<String, Object>> editQuestion(Long moduleId, UpdateQuestionDTO updateQuestionDTO);
-    public ResponseEntity <Map<String, Object>> deleteQuestion(Long moduleId, Long questionId);
+    public Page<GetQuestionDTO> getAllModuleQuestionsById(Long subjectId, Long moduleId, Pageable pageable);
+    public ResponseEntity <Map<String, Object>> getQuestionById(Long questionId);
+    public ResponseEntity <Map<String, Object>> getModuleQuestionById(Long subjectId, Long moduleId, Long questionId);
+    public ResponseEntity <Map<String, Object>> createQuestion(Long subjectId, Long moduleId, CreateQuestionDTO createQuestionDTO);
+    public ResponseEntity <Map<String, Object>> updateQuestion(Long questionId, UpdateQuestionDTO updateQuestionDTO);
+    public ResponseEntity <Map<String, Object>> deleteQuestion(Long questionId);
 }

@@ -1,6 +1,7 @@
 package com.alejandro.studybooster.module.controller.dto.Question;
 
-import com.alejandro.studybooster.module.controller.dto.QuestionOption.CreateQuestionOptionDTO;
+
+import com.alejandro.studybooster.module.controller.dto.QuestionOption.UpdateQuestionOptionDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,9 +11,6 @@ import java.util.List;
 
 public record UpdateQuestionDTO(
 
-        @NotNull
-        Long id,
-
         @NotBlank
         String question,
 
@@ -20,6 +18,6 @@ public record UpdateQuestionDTO(
         String answerExplanation,
 
         @NotEmpty
-        List<@Valid CreateQuestionOptionDTO> options
+        List<@Valid UpdateQuestionOptionDTO> options
 ) {
 }
