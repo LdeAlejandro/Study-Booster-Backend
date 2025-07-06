@@ -14,9 +14,9 @@ import java.util.Map;
 
 public interface DocService {
 
-    public Page<GetDocsDTO> getDocsByModuleId(Long moduleId, Pageable pageable);
+    //create doc
     public ResponseEntity<Map<String, Object>> getDocById(Long docId);
-    public ResponseEntity<Map<String, Object>> createDoc(CreateDocDTO createDocDTO);
+    public ResponseEntity<Map<String, Object>> createDoc(Long moduleId, CreateDocDTO createDocDTO);
     public ResponseEntity<Map<String, Object>> updateDoc(Long docId, UpdateDocDTO updateDocDTO);
     public ResponseEntity<Map<String, Object>> deleteDoc(Long docId);
 }

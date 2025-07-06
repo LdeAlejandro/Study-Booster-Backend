@@ -141,29 +141,40 @@
         ]
     }
     ```
-- **Put Question**  
+- **Delete Question**  
 `DELETE /question/{id}`
-  
----
-
-### Questions Options
-
-- >`GET /question/{questionId}/option`
-- >`POST /question/{questionId}/option`
-- >`PUT /question/{questionId}/option/{optionId}`
-- >`DELETE /question/{questionId}/option/{optionId}`
-
 
 ---
 
 ### Docs
-- >`GET /module/{moduleId}/docs`
-- >`GET /module/{moduleId}/docs/{docId}`
-- >`POST /module/{moduleId}/docs`
-- >`PUT /module/{moduleId}/docs/{docId}`
-- >`DELETE /module/{moduleId}/docs/{docId}`
+
+- **Get Doc by ID**  
+`GET /module/{moduleId}/doc/{docId}`
+
+
+- **Create Doc**  
+`POST /module/{moduleId}/doc`
+  ```json
+  {
+    "title": "Markdown Introduction",
+    "content": "# LOREM CONTENT"
+  }
+  ```
+
+- **Update Doc By Id**  
+  `PUT /module/{moduleId}/doc/{docId}`
+  ```json
+  {
+    "title": "Markdown Introduction",
+    "content": "# LOREM CONTENT"
+  }
+  ```
+
+- **Delete Doc By Id**   
+`DELETE /module/{moduleId}/docs/{docId}`
 ---
 
+PENDING: 
 ## 🗂️ Groups
 
 - >`POST /group/create-group`
