@@ -15,4 +15,6 @@ public interface ContentModuleRepository extends JpaRepository<ContentModule, Lo
         Optional<ContentModule> findById(Long id);
 
         List<ContentModule> findBySubjectIdAndParentIsNull(Long subjectId);
+
+        List<ContentModule> findByNameContainingIgnoreCase(String name);
 }

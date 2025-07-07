@@ -30,6 +30,30 @@ public class ContentModuleServiceImpl implements ContentModuleService {
         this.contentModuleRepository =  contentModuleRepository;
     }
 
+    @Override
+    public List<Map<String, Object>> getAllModuleSummaries() {
+        return contentModuleRepository.findAll().stream()
+                .map(module -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", module.getId());
+                    map.put("name", module.getName());
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Map<String, Object>> searchModulesByName(String query) {
+        return contentModuleRepository.findByNameContainingIgnoreCase(query).stream()
+                .map(module -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", module.getId());
+                    map.put("name", module.getName());
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     // get subjects modules pageable
     @Override

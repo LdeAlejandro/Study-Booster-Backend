@@ -12,6 +12,8 @@ import java.util.Map;
 
 public interface ContentModuleService {
 
+    public List<Map<String, Object>> getAllModuleSummaries();
+    public List<Map<String, Object>> searchModulesByName(String query);
     public Page<GetContentModuleDTO> getPageModules(Long subjectId, Pageable pageable);
     public ResponseEntity<Map<String, Object>> getModuleById(Long moduleId);
     public Page<GetContentModuleDTO> getModulesWithDepth(Long subjectId, int depth, Pageable pageable);

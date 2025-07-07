@@ -173,6 +173,44 @@
 - **Delete Doc By Id**   
 `DELETE /module/{moduleId}/docs/{docId}`
 ---
+### Random-question
+
+- **Get Random Question from module id**  
+  `GET /preferences/{moduleId}/random-question`
+---
+
+### Alert Preferences
+
+- **Get current preferences from DB**  
+  `GET /preferences`
+
+
+- **Create Preferences**  
+  `POST /preferences`
+  ```json
+  {
+    "label": "Estudo Java",
+    "interval": "MIN_15",
+    "subjectId": 3,
+    "moduleId": null
+  }
+  ```
+
+- **Update Preferences by ID**  
+  `PUT /preferences`
+  ```json
+  {
+    "id": 1,
+    "label": "Estudo atualizado",
+    "interval": "MIN_30",
+    "subjectId": 3,
+    "moduleId": null
+  }
+  ```
+
+  - **Delete preferences By Id**   
+    `DELETE /preferences/{id}`
+---
 
 PENDING: 
 ## 🗂️ Groups
@@ -183,9 +221,5 @@ PENDING:
 - >`POST /group/add-user-to-group/{id}/{user-group}`
   
 ---
-
-## 🔗 Reference
-
-- >`GET /module/{id}/doc/{id}/reference/{id}`
 
 

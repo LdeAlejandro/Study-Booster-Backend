@@ -1,4 +1,4 @@
-package com.alejandro.studybooster.auth.entity;
+package com.alejandro.studybooster.userpreference.entity;
 
 import com.alejandro.studybooster.module.entity.Group;
 import jakarta.persistence.*;
@@ -13,8 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-
-public class User {
+public class UserPreference {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
