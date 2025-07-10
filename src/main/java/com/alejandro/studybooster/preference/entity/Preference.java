@@ -33,5 +33,9 @@ public class Preference {
 
     @Enumerated(EnumType.STRING)
     private TimerInterval interval; // ENUM: FIFTEEN_MIN, THIRTY_MIN, SIXTY_MIN
+
+
+    @Column(name = "last_notified_at")
+    private Long lastNotifiedAt;
 }
 

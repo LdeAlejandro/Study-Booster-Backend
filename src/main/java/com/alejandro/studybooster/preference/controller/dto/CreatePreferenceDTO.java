@@ -12,5 +12,8 @@ public record CreatePreferenceDTO(
         TimerInterval interval,
 
         Long subjectId,
-        Long moduleId
+        Long moduleId,
+
+        @NotNull
+        Long lastNotifiedAt
 ) {}

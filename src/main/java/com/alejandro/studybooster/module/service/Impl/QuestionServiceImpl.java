@@ -15,10 +15,7 @@ import com.alejandro.studybooster.module.repository.QuestionRepository;
 import com.alejandro.studybooster.module.repository.SubjectRepository;
 import com.alejandro.studybooster.module.service.QuestionService;
 import com.alejandro.studybooster.module.util.DataBaseValidator;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -112,20 +109,34 @@ public class QuestionServiceImpl implements QuestionService {
         // get all questions in current module
         Page <Question> questions = questionRepository.findAllByModules_Id(module.getId(), safePageable);
 
-        // map and return questions
-        return questions.map(question -> new GetQuestionDTO(
-                question.getId(),
-                question.getQuestion(),
-                question.getAnswerExplanation(),
-                question.getOptions()
-                        .stream()
-                        .map(option -> new GetQuestionOptionDTO(option.getId(), option.getOption(), option.isCorrectOption()))
-                        .collect(Collectors.toList())
-        ));
+        //shuffle questions order
+        List<Question> questionList = new ArrayList<>(questions.getContent());
+        Collections.shuffle(questionList);
 
+        List<GetQuestionDTO> dtoList = questionList.stream().map(question -> {
+
+            //shuffle options
+            List<QuestionOption> shuffledOptions = new ArrayList<>(question.getOptions());
+            Collections.shuffle(shuffledOptions);
+
+            return new GetQuestionDTO(
+                    question.getId(),
+                    question.getQuestion(),
+                    question.getAnswerExplanation(),
+                    shuffledOptions.stream()
+                            .map(option -> new GetQuestionOptionDTO(
+                                    option.getId(),
+                                    option.getOption(),
+                                    option.isCorrectOption()))
+                            .collect(Collectors.toList())
+            );
+        }).collect(Collectors.toList());
+
+        return new PageImpl<>(dtoList, safePageable, questions.getTotalElements());
 
     }
 
+    // get any question by id
     @Override
     public ResponseEntity<Map<String, Object>> getQuestionById(Long questionId) {
         // check if question exist
@@ -142,12 +153,17 @@ public class QuestionServiceImpl implements QuestionService {
 
         Question question = targetQuestion.get();
 
+        // shuffle options
+        List<QuestionOption> shuffledOptions = new ArrayList<>(question.getOptions());
+        Collections.shuffle(shuffledOptions);
+
         GetQuestionDTO questionDTO = new GetQuestionDTO(
-                question.getId(),
+        question.getId(),
                 question.getQuestion(),
                 question.getAnswerExplanation(),
-                question.getOptions().stream()
-                        .map (option -> new GetQuestionOptionDTO(
+                shuffledOptions.stream()
+                        .map (
+                                option -> new GetQuestionOptionDTO(
                                         option.getId(),
                                         option.getOption(),
                                         option.isCorrectOption()
@@ -179,11 +195,17 @@ public class QuestionServiceImpl implements QuestionService {
 
         Map<String, Object> response = new HashMap<>();
 
+        //shuffle options
+
+        List<QuestionOption> shuffledOptions = new ArrayList<>(question.getOptions());
+        Collections.shuffle(shuffledOptions);
+
         GetQuestionDTO questionDTO = new GetQuestionDTO(
                 question.getId(),
                 question.getQuestion(),
                 question.getAnswerExplanation(),
-                question.getOptions().stream()
+
+                shuffledOptions.stream()
                         .map (option -> new GetQuestionOptionDTO(
                                     option.getId(),
                                     option.getOption(),

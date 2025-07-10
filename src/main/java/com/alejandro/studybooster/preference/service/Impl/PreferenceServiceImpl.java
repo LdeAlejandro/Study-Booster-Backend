@@ -2,6 +2,7 @@ package com.alejandro.studybooster.preference.service.Impl;
 
 import com.alejandro.studybooster.module.entity.ContentModule;
 import com.alejandro.studybooster.module.entity.Question;
+import com.alejandro.studybooster.module.entity.QuestionOption;
 import com.alejandro.studybooster.module.repository.ContentModuleRepository;
 import com.alejandro.studybooster.module.repository.SubjectRepository;
 import com.alejandro.studybooster.preference.controller.dto.CreatePreferenceDTO;
@@ -29,19 +30,24 @@ public class PreferenceServiceImpl implements PreferenceService {
         this.moduleRepository = moduleRepository;
     }
 
+    //get all preferences
     @Override
     public List<ResponsePreferenceDTO> getAllPreferences() {
+
         return preferenceRepository.findAll().stream().map(pref -> new ResponsePreferenceDTO(
                 pref.getId(),
                 pref.getLabel(),
+                pref.getInterval().getMilliseconds(),
                 pref.getInterval().name(),
                 pref.getSubject() != null ? pref.getSubject().getId() : null,
                 pref.getSubject() != null ? pref.getSubject().getSubjectName() : null,
                 pref.getModule() != null ? pref.getModule().getId() : null,
-                pref.getModule() != null ? pref.getModule().getName() : null
+                pref.getModule() != null ? pref.getModule().getName() : null,
+                pref.getLastNotifiedAt()
         )).toList();
     }
 
+    // create preference
     @Override
     public ResponseEntity<Map<String, Object>> createPreference(CreatePreferenceDTO dto) {
         Map<String, Object> response = new HashMap<>();
@@ -49,6 +55,7 @@ public class PreferenceServiceImpl implements PreferenceService {
         Preference preference = new Preference();
         preference.setLabel(dto.label());
         preference.setInterval(dto.interval());
+        preference.setLastNotifiedAt(dto.lastNotifiedAt());
 
         if (dto.subjectId() != null) {
             subjectRepository.findById(dto.subjectId()).ifPresent(preference::setSubject);
@@ -63,19 +70,22 @@ public class PreferenceServiceImpl implements PreferenceService {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+
+    //update prefence
     @Override
     public ResponseEntity<Map<String, Object>> updatePreference(UpdatePreferenceDTO dto) {
         Map<String, Object> response = new HashMap<>();
 
-        Optional<Preference> optionalPreference = preferenceRepository.findById(dto.id());
-        if (optionalPreference.isEmpty()) {
+        Optional<Preference> targetPreference = preferenceRepository.findById(dto.id());
+        if (targetPreference.isEmpty()) {
             response.put("message", "Preference not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
-        Preference preference = optionalPreference.get();
+        Preference preference = targetPreference.get();
         preference.setLabel(dto.label());
         preference.setInterval(dto.interval());
+        preference.setLastNotifiedAt(dto.lastNotifiedAt());
 
         if (dto.subjectId() != null) {
             subjectRepository.findById(dto.subjectId()).ifPresent(preference::setSubject);
@@ -94,14 +104,21 @@ public class PreferenceServiceImpl implements PreferenceService {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    //delete preference
     @Override
     public ResponseEntity<Map<String, Object>> deletePreference(Long id) {
+        Optional<Preference> optionalPreference = preferenceRepository.findById(id);
+        if (optionalPreference.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         Map<String, Object> response = new HashMap<>();
         preferenceRepository.deleteById(id);
         response.put("message", "Preference deleted successfully");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    //random question
     @Override
     public ResponseEntity<Map<String, Object>> getRandomQuestionFromPreference(Long preferenceId) {
         Optional<Preference> prefOpt = preferenceRepository.findById(preferenceId);
@@ -137,10 +154,15 @@ public class PreferenceServiceImpl implements PreferenceService {
             response.put("source_id", pref.getSubject().getId());
             response.put("source_name", pref.getSubject().getSubjectName());
         }
+
+        //shuffle options and return
+        List<QuestionOption> shuffledOptions = new ArrayList<>(randomQuestion.getOptions());
+        Collections.shuffle(shuffledOptions);
+
         response.put("question_id", randomQuestion.getId());
         response.put("question", randomQuestion.getQuestion());
         response.put("question_answer_explanation", randomQuestion.getAnswerExplanation());
-        response.put("options", randomQuestion.getOptions().stream().map(opt -> Map.of(
+        response.put("options", shuffledOptions.stream().map(opt -> Map.of(
                 "id", opt.getId(),
                 "option", opt.getOption(),
                 "correct", opt.isCorrectOption()

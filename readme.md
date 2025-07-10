@@ -219,7 +219,8 @@ PENDING:
 - >`POST /group/add-subject-to-group/{id}`
 - >`GET /group/list-group`
 - >`POST /group/add-user-to-group/{id}/{user-group}`
-  
+
+## Authentication
 ---
 
 
