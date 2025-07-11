@@ -1,9 +1,9 @@
 package com.alejandro.studybooster.module.controller;
 
-import com.alejandro.studybooster.module.controller.dto.SubjectDTO;
+import com.alejandro.studybooster.module.controller.dto.Subject.GetSubjectDTO;
+import com.alejandro.studybooster.module.controller.dto.Subject.SubjectDTO;
 import com.alejandro.studybooster.module.entity.Subject;
 import com.alejandro.studybooster.module.service.SubjectService;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class SubjectController {
     }
 
     @GetMapping("/subjects")
-    public Page<Subject> getSubjects(Pageable pageable){
+    public Page<GetSubjectDTO> getSubjects(Pageable pageable){
 
         return subjectService.getSubjects(pageable);
     }

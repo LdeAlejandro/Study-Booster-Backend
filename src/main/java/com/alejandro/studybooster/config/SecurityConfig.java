@@ -9,6 +9,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -21,6 +23,7 @@ public class SecurityConfig {
         //modificar cors on deploy
         http.cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("http://localhost:5173"));
                     config.setAllowCredentials(true); // Allow auth
                     config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, etc.)
                     config.addAllowedHeader("*"); // Allow all headers

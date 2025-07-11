@@ -1,11 +1,11 @@
 package com.alejandro.studybooster.module.service.Impl;
 
-import com.alejandro.studybooster.module.controller.dto.SubjectDTO;
+import com.alejandro.studybooster.module.controller.dto.Subject.GetModuleDTO;
+import com.alejandro.studybooster.module.controller.dto.Subject.GetSubjectDTO;
+import com.alejandro.studybooster.module.controller.dto.Subject.SubjectDTO;
 import com.alejandro.studybooster.module.entity.Subject;
 import com.alejandro.studybooster.module.repository.SubjectRepository;
 import com.alejandro.studybooster.module.service.SubjectService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +32,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     //get subjects
     @Override
-    public Page<Subject> getSubjects(@PageableDefault(size = 10, page = 0) Pageable pageable){
+    public Page<GetSubjectDTO> getSubjects(@PageableDefault(size = 10, page = 0) Pageable pageable){
 
         // limit page elements to 12
         //create a sage pagination
@@ -42,8 +42,11 @@ public class SubjectServiceImpl implements SubjectService {
                 Sort.by(Sort.Direction.DESC, "id")
         );
 
-
-        return subjectRepository.findAll(safePageable);
+        return subjectRepository.findAll(safePageable)
+                .map(subject -> new GetSubjectDTO(
+                        subject.getId(),
+                        subject.getSubjectName()
+                ));
     }
 
     //create subject

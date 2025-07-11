@@ -1,5 +1,6 @@
 package com.alejandro.studybooster.module.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class QuestionOption {
     private boolean correctOption;
 
     @ManyToOne
+    @JsonBackReference // To avoid infinite recursion when serializing
     @JoinColumn (name = "question_id", nullable = false)
     private Question question;
 

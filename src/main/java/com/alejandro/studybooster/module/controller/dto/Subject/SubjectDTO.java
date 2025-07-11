@@ -1,4 +1,4 @@
-package com.alejandro.studybooster.module.controller.dto;
+package com.alejandro.studybooster.module.controller.dto.Subject;
 
 import jakarta.validation.constraints.NotBlank;
 

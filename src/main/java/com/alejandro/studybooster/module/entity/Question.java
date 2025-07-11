@@ -1,5 +1,6 @@
 package com.alejandro.studybooster.module.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class Question {
     private String answerExplanation;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // To avoid infinite recursion when serializing
     private List<QuestionOption> options = new ArrayList<>();
 
     @ManyToMany(mappedBy = "questions")
