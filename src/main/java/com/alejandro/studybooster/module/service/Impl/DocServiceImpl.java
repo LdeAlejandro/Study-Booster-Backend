@@ -65,7 +65,12 @@ public class DocServiceImpl implements DocService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
+        // store targe doc data in new object
         Doc doc = targetDoc.get();
+        // unlink doc from the module so it can be deleted
+        for (ContentModule module : doc.getModules()) {
+            module.getDocs().remove(doc); //remove doc link from module
+        }
         GetDocDTO dto = new GetDocDTO(doc.getId(), doc.getTitle(), doc.getContent());
 
         response.put("message", "Doc found");

@@ -24,7 +24,6 @@ public class Doc {
     @Column(nullable = false)
     private String content;
 
-    @ManyToMany (mappedBy = "docs")
-
+    @ManyToMany(mappedBy = "docs", cascade = CascadeType.ALL) // inverse side of the relationship with ContentModule now docs can be deleted
     private Set<ContentModule> modules = new HashSet<>();
 }

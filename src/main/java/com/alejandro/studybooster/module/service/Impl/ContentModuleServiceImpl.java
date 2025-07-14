@@ -89,6 +89,7 @@ public class ContentModuleServiceImpl implements ContentModuleService {
         ));
     }
 
+
     @Override
     public ResponseEntity<Map<String, Object>> getModuleById(Long moduleId) {
 
@@ -125,80 +126,28 @@ public class ContentModuleServiceImpl implements ContentModuleService {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // get modules with depth pageable
     @Override
-    public Page<GetContentModuleDTO> getModulesWithDepth(
-            Long subjectId, int depth, Long parentId,
-            Pageable pageable) {
+    public Page<GetContentModuleDTO> getModulesByParent(Long subjectId, Long parentId, Pageable pageable) {
+        Page<ContentModule> modules;
 
-        // create a list to store current depth modules
-        List<GetContentModuleDTO> modulesAtCurrentDepth = new ArrayList<>();
-
-        // if parentId is sent then
-        // createa List to store starting modules
-        List<ContentModule> startingModules;
-
+        // Se parentId for fornecido, busca os filhos do parent. Caso contrário, busca os módulos raiz.
         if (parentId != null) {
-            ContentModule parent = contentModuleRepository.findById(parentId).orElse(null);
-
-            // if parent doesn't return empty
-            if (parent == null || !parent.getSubject().getId().equals(subjectId)) {
-                return Page.empty(); // evita retorno incorreto se parent não existir ou não pertencer ao subject
-            }
-                startingModules = List.of(parent); // add parent id to list
+            modules = contentModuleRepository.findBySubjectIdAndParentId(subjectId, parentId, pageable);
         } else {
-            startingModules = contentModuleRepository.findBySubjectIdAndParentIsNull(subjectId);
+            modules = contentModuleRepository.findBySubjectIdAndParentIsNull(subjectId, pageable);
         }
 
-
-        // recursive call to get modules with current depth
-        for(ContentModule module : startingModules){
-            filterByDepthRecursive(module, modulesAtCurrentDepth, depth, 0);
-        }
-
-        //pagination
-        Pageable safePageable = PageRequest.of(
-                pageable.getPageNumber(), // check number of current page in the request
-                Math.min(pageable.getPageSize(), 16), // limit max page elements to 16
-                Sort.by(Sort.Direction.DESC, "id") // sort by id decrecent
-
-        );
-
-        // calculate start and end for pagination and create paged list
-        int start = (int) safePageable.getOffset(); // check how many elements have to skip to get the current page (number of elements to skip)
-        int end = Math.min(start + safePageable.getPageSize(), modulesAtCurrentDepth.size()); // check until which element to stop
-        List<GetContentModuleDTO> paged = modulesAtCurrentDepth.subList(start, end); // create a list of element of the current page
-
-        return new PageImpl<>(paged, safePageable, modulesAtCurrentDepth.size());
-
+        return modules.map(module -> new GetContentModuleDTO(
+                module.getId(),
+                module.getName(),
+                module.getSubject().getId(),
+                module.getParent() != null ? module.getParent().getId() : null,
+                module.getChildren().stream().map(ContentModule::getId).collect(Collectors.toSet()),
+                module.getQuestions().stream().map(Question::getId).collect(Collectors.toSet()),
+                docRepository.findDocsByModuleId(module.getId())
+        ));
     }
 
-    //collectModulesWiththeCurrentDepth auxiliar function
-    private void filterByDepthRecursive(ContentModule module, List<GetContentModuleDTO> result, int targetDepth, int currentDepth){
-
-        //check the if current depth is equal to the target depth
-        if (currentDepth == targetDepth) {
-            // add module to list with depth
-            result.add(new GetContentModuleDTO(
-                    module.getId(),
-                    module.getName(),
-                    module.getSubject().getId(),
-                    module.getParent() != null ? module.getParent().getId() : null, // check if parent is null and return null if it is
-                    module.getChildren().stream().map(ContentModule::getId).collect(Collectors.toSet()), // get module children ids
-                    module.getQuestions().stream().map(Question::getId).collect(Collectors.toSet()), // get module question ids
-                    docRepository.findDocsByModuleId(module.getId()) //get docs id and title
-            ));
-
-            // stop recursion when reaching expected target depth
-            return;
-
-        }
-
-        // recursive call if current depth is not equal to target depth repeat until target depth is reached
-        for (ContentModule child : module.getChildren()){
-            filterByDepthRecursive(child, result, targetDepth, currentDepth + 1);
-        }
-    }
 
     //Create module
     @Override
