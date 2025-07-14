@@ -1,5 +1,6 @@
 package com.alejandro.studybooster.module.controller.dto.ContentModule;
 
+import com.alejandro.studybooster.module.controller.dto.Doc.GetDocsDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -19,6 +20,6 @@ public record GetContentModuleDTO(
         Long parentId,
         Set<Long> childrenIds,
         Set<Long> questionIds,
-        Set<Long> docIds
+        Set<GetDocsDTO> docs
 ) {
 }

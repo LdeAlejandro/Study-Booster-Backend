@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 public record GetDocDTO(
 
         Long id,
-
-        @NotBlank
         String title,
-
         String content
 ) {
 }

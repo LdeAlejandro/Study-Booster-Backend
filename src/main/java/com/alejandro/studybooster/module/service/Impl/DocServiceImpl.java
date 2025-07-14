@@ -45,6 +45,7 @@ public class DocServiceImpl implements DocService {
         doc.setTitle(createDocDTO.title());
         doc.setContent(createDocDTO.content());
         doc.getModules().add(module); // relação ManyToMany
+        module.getDocs().add(doc); // relacion ManyToMany add doc to module
 
         docRepository.save(doc);
 

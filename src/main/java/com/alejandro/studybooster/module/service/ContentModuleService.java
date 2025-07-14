@@ -16,7 +16,7 @@ public interface ContentModuleService {
     public List<Map<String, Object>> searchModulesByName(String query);
     public Page<GetContentModuleDTO> getPageModules(Long subjectId, Pageable pageable);
     public ResponseEntity<Map<String, Object>> getModuleById(Long moduleId);
-    public Page<GetContentModuleDTO> getModulesWithDepth(Long subjectId, int depth, Pageable pageable);
+    public Page<GetContentModuleDTO> getModulesWithDepth(Long subjectId, int depth, Long parentId, Pageable pageable);
     public ResponseEntity<Map<String, Object>> createModule(Long subjectId, CreateContentModuleDTO dto);
     public ResponseEntity<Map<String, Object>> updateModule (Long moduleId, UpdateContentModuleDTO dto);
     public ResponseEntity<Map<String, Object>> deleteModule(Long moduleId);

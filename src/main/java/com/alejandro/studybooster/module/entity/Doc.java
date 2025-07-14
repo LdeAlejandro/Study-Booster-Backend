@@ -25,5 +25,6 @@ public class Doc {
     private String content;
 
     @ManyToMany (mappedBy = "docs")
+
     private Set<ContentModule> modules = new HashSet<>();
 }

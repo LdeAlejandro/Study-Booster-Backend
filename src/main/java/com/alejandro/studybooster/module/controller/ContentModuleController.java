@@ -41,8 +41,9 @@ public class ContentModuleController {
     public Page<GetContentModuleDTO> getModulesWithDepth(
             @PathVariable("subjectId") Long subjectId,
             @RequestParam(required = false, defaultValue = "1") int depth,
+            @RequestParam(required = false) Long parentId,
             @PageableDefault(size = 12, page = 0) Pageable pageable) {
-        return contentModuleService.getModulesWithDepth(subjectId, depth, pageable);
+        return contentModuleService.getModulesWithDepth(subjectId, depth, parentId, pageable);
     }
 
     //Create module

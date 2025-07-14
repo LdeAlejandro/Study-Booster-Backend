@@ -3,11 +3,13 @@ package com.alejandro.studybooster.module.service.Impl;
 import com.alejandro.studybooster.module.controller.dto.ContentModule.CreateContentModuleDTO;
 import com.alejandro.studybooster.module.controller.dto.ContentModule.GetContentModuleDTO;
 import com.alejandro.studybooster.module.controller.dto.ContentModule.UpdateContentModuleDTO;
+import com.alejandro.studybooster.module.controller.dto.Doc.GetDocsDTO;
 import com.alejandro.studybooster.module.entity.ContentModule;
 import com.alejandro.studybooster.module.entity.Doc;
 import com.alejandro.studybooster.module.entity.Question;
 import com.alejandro.studybooster.module.entity.Subject;
 import com.alejandro.studybooster.module.repository.ContentModuleRepository;
+import com.alejandro.studybooster.module.repository.DocRepository;
 import com.alejandro.studybooster.module.repository.SubjectRepository;
 import com.alejandro.studybooster.module.service.ContentModuleService;
 import org.springframework.data.domain.*;
@@ -15,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,10 +27,12 @@ public class ContentModuleServiceImpl implements ContentModuleService {
 
     private final SubjectRepository subjectRepository;
     private final ContentModuleRepository contentModuleRepository;
+    private final DocRepository docRepository;
 
-    public ContentModuleServiceImpl(SubjectRepository subjectRepository, ContentModuleRepository contentModuleRepository) {
+    public ContentModuleServiceImpl(SubjectRepository subjectRepository, ContentModuleRepository contentModuleRepository, DocRepository docRepository) {
         this.subjectRepository = subjectRepository;
         this.contentModuleRepository =  contentModuleRepository;
+        this.docRepository = docRepository;
     }
 
     @Override
@@ -78,8 +83,8 @@ public class ContentModuleServiceImpl implements ContentModuleService {
                 module.getSubject().getId(),
                 module.getParent() != null ? module.getParent().getId() : null, // check if parent is null and return null if it is
                 module.getChildren().stream().map(ContentModule::getId).collect(Collectors.toSet()), // get module children ids
-                module.getQuestions().stream().map(Question::getId).collect(Collectors.toSet()), // get module question ids
-                module.getDocs().stream().map(Doc::getId).collect(Collectors.toSet())
+                module.getQuestions().stream().map(Question::getId).collect(Collectors.toSet()),
+                docRepository.findDocsByModuleId(module.getId()) // //get docs id and title
 
         ));
     }
@@ -110,7 +115,7 @@ public class ContentModuleServiceImpl implements ContentModuleService {
                 module.getParent() != null ? module.getParent().getId() : null, // check if parent is null and return null if it is
                 module.getChildren().stream().map(ContentModule::getId).collect(Collectors.toSet()), // get module children ids
                 module.getQuestions().stream().map(Question::getId).collect(Collectors.toSet()), // get module question ids
-                module.getDocs().stream().map(Doc::getId).collect(Collectors.toSet())
+                docRepository.findDocsByModuleId(module.getId()) //get docs id and title
         );
 
         response.put("message", "Module found");
@@ -123,17 +128,31 @@ public class ContentModuleServiceImpl implements ContentModuleService {
     // get modules with depth pageable
     @Override
     public Page<GetContentModuleDTO> getModulesWithDepth(
-            Long subjectId, int depth,
+            Long subjectId, int depth, Long parentId,
             Pageable pageable) {
 
         // create a list to store current depth modules
         List<GetContentModuleDTO> modulesAtCurrentDepth = new ArrayList<>();
 
-        // get root modules and add then to the list
-        List<ContentModule> rootModules = contentModuleRepository.findBySubjectIdAndParentIsNull(subjectId);
+        // if parentId is sent then
+        // createa List to store starting modules
+        List<ContentModule> startingModules;
+
+        if (parentId != null) {
+            ContentModule parent = contentModuleRepository.findById(parentId).orElse(null);
+
+            // if parent doesn't return empty
+            if (parent == null || !parent.getSubject().getId().equals(subjectId)) {
+                return Page.empty(); // evita retorno incorreto se parent não existir ou não pertencer ao subject
+            }
+                startingModules = List.of(parent); // add parent id to list
+        } else {
+            startingModules = contentModuleRepository.findBySubjectIdAndParentIsNull(subjectId);
+        }
+
 
         // recursive call to get modules with current depth
-        for(ContentModule module : rootModules){
+        for(ContentModule module : startingModules){
             filterByDepthRecursive(module, modulesAtCurrentDepth, depth, 0);
         }
 
@@ -157,7 +176,7 @@ public class ContentModuleServiceImpl implements ContentModuleService {
     //collectModulesWiththeCurrentDepth auxiliar function
     private void filterByDepthRecursive(ContentModule module, List<GetContentModuleDTO> result, int targetDepth, int currentDepth){
 
-        //check id the current depth is equal to the target depth
+        //check the if current depth is equal to the target depth
         if (currentDepth == targetDepth) {
             // add module to list with depth
             result.add(new GetContentModuleDTO(
@@ -167,8 +186,9 @@ public class ContentModuleServiceImpl implements ContentModuleService {
                     module.getParent() != null ? module.getParent().getId() : null, // check if parent is null and return null if it is
                     module.getChildren().stream().map(ContentModule::getId).collect(Collectors.toSet()), // get module children ids
                     module.getQuestions().stream().map(Question::getId).collect(Collectors.toSet()), // get module question ids
-                    module.getDocs().stream().map(Doc::getId).collect(Collectors.toSet())
+                    docRepository.findDocsByModuleId(module.getId()) //get docs id and title
             ));
+
             // stop recursion when reaching expected target depth
             return;
 
@@ -180,7 +200,8 @@ public class ContentModuleServiceImpl implements ContentModuleService {
         }
     }
 
-    //Create module@Override
+    //Create module
+    @Override
     public ResponseEntity<Map<String, Object>> createModule(Long subjectId, CreateContentModuleDTO dto){
 
         // response object
