@@ -36,13 +36,12 @@ public class PreferenceServiceImpl implements PreferenceService {
 
         return preferenceRepository.findAll().stream().map(pref -> new ResponsePreferenceDTO(
                 pref.getId(),
-                pref.getLabel(),
+                pref.getModuleName(),
                 pref.getInterval().getMilliseconds(),
                 pref.getInterval().name(),
                 pref.getSubject() != null ? pref.getSubject().getId() : null,
                 pref.getSubject() != null ? pref.getSubject().getSubjectName() : null,
                 pref.getModule() != null ? pref.getModule().getId() : null,
-                pref.getModule() != null ? pref.getModule().getName() : null,
                 pref.getLastNotifiedAt()
         )).toList();
     }
@@ -53,7 +52,7 @@ public class PreferenceServiceImpl implements PreferenceService {
         Map<String, Object> response = new HashMap<>();
 
         Preference preference = new Preference();
-        preference.setLabel(dto.label());
+        preference.setModuleName(dto.moduleName());
         preference.setInterval(dto.interval());
         preference.setLastNotifiedAt(dto.lastNotifiedAt());
 
@@ -83,7 +82,7 @@ public class PreferenceServiceImpl implements PreferenceService {
         }
 
         Preference preference = targetPreference.get();
-        preference.setLabel(dto.label());
+        preference.setModuleName(dto.moduleName());
         preference.setInterval(dto.interval());
         preference.setLastNotifiedAt(dto.lastNotifiedAt());
 

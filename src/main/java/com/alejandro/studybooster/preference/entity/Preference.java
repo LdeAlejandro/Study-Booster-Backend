@@ -21,7 +21,8 @@ public class Preference {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String label;
+    @Column(name = "module_name")
+    private String moduleName;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreatePreferenceDTO(
 
-        String label,
+        String moduleName,
 
         @NotNull
         TimerInterval interval,

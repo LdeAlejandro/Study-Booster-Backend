@@ -9,7 +9,7 @@ public record UpdatePreferenceDTO(
         Long id,
 
         @NotEmpty
-        String label,
+        String moduleName,
 
         @NotNull
         TimerInterval interval,
